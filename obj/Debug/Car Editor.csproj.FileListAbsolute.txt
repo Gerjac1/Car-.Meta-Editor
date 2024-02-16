@@ -1,0 +1,36 @@
+F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car Editor.csproj.AssemblyReference.cache
+F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car_Editor.Properties.Resources.resources
+F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car Editor.csproj.GenerateResource.cache
+F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car Editor.csproj.CoreCompileInputs.cache
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\Car Editor.exe
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\Car Editor.pdb
+F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car Editor.exe
+F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car Editor.pdb
+F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car_Editor.MainForm.resources
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Configuration.ConfigurationManager.dll
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Configuration.ConfigurationManager.xml
+F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car Editor.csproj.CopyComplete
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\Car Editor.exe.config
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\Car Editor.exe.manifest
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\Car Editor.application
+F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car Editor.exe.manifest
+F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car Editor.application
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Buffers.dll
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Memory.dll
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Numerics.Vectors.dll
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Text.Encodings.Web.dll
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Text.Json.dll
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Threading.Tasks.Extensions.dll
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.ValueTuple.dll
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Buffers.xml
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Memory.xml
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Numerics.Vectors.xml
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Text.Encodings.Web.xml
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Text.Json.xml
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Threading.Tasks.Extensions.xml
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.ValueTuple.xml
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\appsettings.json
