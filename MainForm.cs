@@ -17,11 +17,11 @@ namespace Car_Editor
 {
     public partial class MainForm : Form
     {
-        private Button openFileDialogButton; // Deklaracja przycisku OpenFileDialog
-        private Label selectedFileLabel; // Deklaracja etykiety na nazwę wybranego pliku
-        private ComboBox options; // Wybór opcji 
+        private Button openFileDialogButton; 
+        private Label selectedFileLabel; 
+        private ComboBox options; 
         private int selectedComboBox;
-        private Label LabelOptions; // opis do wyboru opcji
+        private Label LabelOptions; 
         private CheckBox checkbox;
         private CheckBox checkbox2;
         private Button Submit;
@@ -34,16 +34,16 @@ namespace Car_Editor
         public MainForm()
         {
             InitializeComponent();
-            InitializeOpenFileDialogButton(); // Inicjalizacja przycisku OpenFileDialog
-            InitializeSelectedFileLabel(); // Inicjalizacja etykiety na nazwę wybranego pliku
-            InitializeOptions(); // Inicjalizacja wyboru opcji
-            InitializeOptionsLabel(); // Inicjalizacja label do wyboru opcji
+            InitializeOpenFileDialogButton(); 
+            InitializeSelectedFileLabel(); 
+            InitializeOptions(); 
+            InitializeOptionsLabel(); 
             InitializeCheckbox();
             InitializeSubmit();
             InitializeEditConfigButton();
             config = LoadConfig();
 
-            // Dodanie obsługi zdarzeń przeciągania i upuszczania plików na przycisk
+            // Drag & Drop support
             openFileDialogButton.AllowDrop = true;
             openFileDialogButton.DragEnter += openFileDialogButton_DragEnter;
             openFileDialogButton.DragDrop += openFileDialogButton_DragDrop;
@@ -55,10 +55,10 @@ namespace Car_Editor
         {
             try
             {
-                // Odczytaj zawartość pliku JSON
+                // Read json file
                 string jsonString = File.ReadAllText(ConfigFilePath);
 
-                // Deserializacja zawartości JSON do obiektu
+                // Deserialize json file
                 return JsonSerializer.Deserialize<ConfigModel>(jsonString);
             }
             catch (Exception ex)
@@ -70,13 +70,11 @@ namespace Car_Editor
 
         private void InitializeEditConfigButton()
         {
-            // Tworzenie przycisku
             Button editConfigButton = new Button();
             editConfigButton.Text = "Edytuj Config";
-            editConfigButton.Dock = DockStyle.Bottom; // Przycisk będzie umieszczony na dole formularza
-            editConfigButton.Click += editConfigButton_Click; // Przypisanie zdarzenia kliknięcia
+            editConfigButton.Dock = DockStyle.Bottom; // Assign button to bottom dock
+            editConfigButton.Click += editConfigButton_Click; 
 
-            // Dodanie przycisku do formularza
             this.Controls.Add(editConfigButton);
         }
 
@@ -84,7 +82,6 @@ namespace Car_Editor
         {
             try
             {
-                // Otwórz plik appsettings.json w domyślnym edytorze tekstu systemu operacyjnego
                 Process.Start(new ProcessStartInfo("notepad.exe", "appsettings.json") { Verb = "runas"});
             }
             catch (Exception ex)
@@ -93,22 +90,20 @@ namespace Car_Editor
             }
     }
 
-        private void InitializeOpenFileDialogButton() // Funkcja odpowiadająca za uruchomienie pojawienia się przycisku
+        private void InitializeOpenFileDialogButton() 
         {
-            // Inicjalizacja przycisku
             openFileDialogButton = new Button();
             openFileDialogButton.Text = "Wybierz plik";
             openFileDialogButton.Location = new System.Drawing.Point(10, 10);
             openFileDialogButton.Size = new System.Drawing.Size(100, 30);
-            openFileDialogButton.Click += openFileDialogButton_Click; // Przypisanie zdarzenia kliknięcia
+            openFileDialogButton.Click += openFileDialogButton_Click; 
 
-            // Dodanie przycisku do formularza
             this.Controls.Add(openFileDialogButton);
         }
 
         private void openFileDialogButton_DragEnter(object sender, DragEventArgs e)
         {
-            // Obsługa zdarzenia przeciągania pliku nad przyciskiem
+            // Drag & Drop support
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
@@ -126,28 +121,26 @@ namespace Car_Editor
 
         private void openFileDialogButton_DragDrop(object sender, DragEventArgs e)
         {
-            // Obsługa zdarzenia upuszczenia pliku na przycisk
+            // Drag & Drop support
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (files.Length > 0)
             {
                 string filePath = files[0];
 
-                // Wyświetlenie nazwy pliku w etykiecie
+                // Show name
                 selectedFileLabel.Text = "Wybrany plik: " + Path.GetFileName(filePath);
                 selectedFilePath = files[0];
             }
         }
-        private void InitializeOptions() // Funkcja odpowiadająca za uruchomienie pojawienia się przycisku
+        private void InitializeOptions() 
         {
-            // Inicjalizacja przycisku
             options = new ComboBox();
             options.Items.AddRange(new object[] { "2-osobowe", "4-osobowe", "Bomba" });
             options.SelectedIndex = 0;
             options.Location = new System.Drawing.Point(10, 65);
             options.Size = new System.Drawing.Size(150, 30);
-            options.DropDownStyle = ComboBoxStyle.DropDownList; // Ustawienie ComboBox na niemożliwość wpisywania wartości ręcznie
+            options.DropDownStyle = ComboBoxStyle.DropDownList; // No manual input here
 
-            // Dodanie przycisku do formularza
             this.Controls.Add(options);
             options.SelectedIndexChanged += Options_SelectedIndexChanged;
         }
@@ -167,14 +160,13 @@ namespace Car_Editor
             this.Controls.Add(LabelOptions);
         }
 
-        private void InitializeSelectedFileLabel() // Funkcja inicjalizująca etykietę na nazwę wybranego pliku
+        private void InitializeSelectedFileLabel() 
         {
             selectedFileLabel = new Label();
             selectedFileLabel.Text = "Wybrany plik: ";
             selectedFileLabel.Location = new System.Drawing.Point(120, 18);
             selectedFileLabel.AutoSize = true;
 
-            // Dodanie etykiety do formularza
             this.Controls.Add(selectedFileLabel);
         }
 
@@ -184,14 +176,14 @@ namespace Car_Editor
             checkbox.Text = "Boost Masy";
             checkbox.Location = new System.Drawing.Point(180, 60);
             checkbox.Size = new System.Drawing.Size(85, 30);
-            checkbox.CheckedChanged += (sender, e) => selectedcheckbox1 = checkbox.Checked; // Przechwytywanie wartości zaznaczenia checkboxa
+            checkbox.CheckedChanged += (sender, e) => selectedcheckbox1 = checkbox.Checked; // Getting checkbox value
 
 
             checkbox2 = new CheckBox();
             checkbox2.Text = "Boost Silnika";
             checkbox2.Location = new System.Drawing.Point(270, 60);
             checkbox2.Size = new System.Drawing.Size(90, 30);
-            checkbox2.CheckedChanged += (sender, e) => selectedcheckbox2 = checkbox2.Checked; // Przechwytywanie wartości zaznaczenia checkboxa
+            checkbox2.CheckedChanged += (sender, e) => selectedcheckbox2 = checkbox2.Checked; // Getting checkbox value
 
 
             this.Controls.Add(checkbox);
@@ -203,7 +195,7 @@ namespace Car_Editor
             Submit.Text = "Zmień Handling";
             Submit.Location = new System.Drawing.Point(10, 100);
             Submit.Size = new System.Drawing.Size(100, 30);
-            Submit.Click += Submit_Click; // Przypisanie zdarzenia kliknięcia
+            Submit.Click += Submit_Click; 
 
             this.Controls.Add(Submit);
         }
@@ -222,10 +214,10 @@ namespace Car_Editor
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    // Pobranie ścieżki wybranego pliku
+                    // Get file path
                     filePath = openFileDialog.FileName;
 
-                    // Wyświetlenie nazwy pliku w etykiecie
+                    // Show file path 
                     selectedFileLabel.Text = "Wybrany plik: " + Path.GetFileName(filePath);
                     selectedFilePath = openFileDialog.FileName;
                 }
@@ -235,8 +227,7 @@ namespace Car_Editor
         {
             if (string.IsNullOrEmpty(selectedFileLabel.Text) || selectedFileLabel.Text == "Wybrany plik: ")
             {
-                //ShowCustomMessageBox("Nie wybrano pliku!");
-                MessageBox.Show(config.TwoOsFmassBoostMass.ToString(CultureInfo.CreateSpecificCulture("en-US")));
+                ShowCustomMessageBox("Nie wybrano pliku!");
                 return;
             }
             else
@@ -246,30 +237,28 @@ namespace Car_Editor
         }
         private void ShowCustomMessageBox(string message)
         {
-            // Stworzenie niestandardowego okna dialogowego
+            // Custom MessageBox
             Form customMessageBox = new Form();
             customMessageBox.Size = new Size(180, 150);
             customMessageBox.StartPosition = FormStartPosition.CenterParent;
             customMessageBox.FormBorderStyle = FormBorderStyle.FixedDialog;
             customMessageBox.Text = "Wybierz plik";
 
-            // Tekst komunikatu
+            // Message content
             Label label = new Label();
             label.Text = message;
             label.TextAlign = ContentAlignment.MiddleCenter;
             label.Dock = DockStyle.Fill;
 
-            // Przycisk OK
+            // OK button
             Button okButton = new Button();
             okButton.Text = "OK";
             okButton.Dock = DockStyle.Bottom;
             okButton.Click += (sender, e) => customMessageBox.Close();
 
-            // Dodanie kontrolki do okna
             customMessageBox.Controls.Add(label);
             customMessageBox.Controls.Add(okButton);
 
-            // Wyświetlenie okna jako okna dialogowego
             customMessageBox.ShowDialog();
         }
         private void LoadAndModifyMeta(string filePath, bool BoostMass, bool BoostEngine)
@@ -574,19 +563,19 @@ namespace Car_Editor
             XmlNodeList nodes = doc.SelectNodes($"//{nodeName}[@value]");
             if (nodes.Count == 0)
             {
-                // Tworzymy nowy węzeł
+                // Make new node
                 XmlNode newNode = doc.CreateElement(nodeName);
                 XmlAttribute attr = doc.CreateAttribute("value");
                 attr.Value = newValue;
                 newNode.Attributes.Append(attr);
 
-                // Dodajemy nowy węzeł do dokumentu
+                // Add new node to document
                 XmlNode rootNode = doc.SelectSingleNode("CHandlingDataMgr/HandlingData/Item");
                 rootNode.AppendChild(newNode);
             }
             else
             {
-                // Modyfikujemy wartość istniejącego węzła
+                // Moodify existing node
                 foreach (XmlNode node in nodes)
                 {
                     node.Attributes["value"].Value = newValue;
@@ -596,33 +585,28 @@ namespace Car_Editor
 
         private void ShowCustomMessageBox2(string message)
         {
-            // Stworzenie niestandardowego okna dialogowego
             Form customMessageBox = new Form();
             customMessageBox.Size = new Size(180, 150);
             customMessageBox.StartPosition = FormStartPosition.CenterParent;
             customMessageBox.FormBorderStyle = FormBorderStyle.FixedDialog;
             customMessageBox.Text = "Modyfikacja pliku";
 
-            // Tekst komunikatu
             Label label = new Label();
             label.Text = message;
             label.TextAlign = ContentAlignment.MiddleCenter;
             label.Dock = DockStyle.Fill;
 
-            // Przycisk OK
             Button okButton = new Button();
             okButton.Text = "OK";
             okButton.Dock = DockStyle.Bottom;
             okButton.Click += (sender, e) => customMessageBox.Close();
 
-            // Dodanie kontrolki do okna
             customMessageBox.Controls.Add(label);
             customMessageBox.Controls.Add(okButton);
 
-            // Wyświetlenie okna jako okna dialogowego
             customMessageBox.ShowDialog();
         }
-        private void MainForm_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e) // To Delete in future
         { 
 
         }
