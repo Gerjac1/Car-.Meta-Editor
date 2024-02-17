@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Car Editor.exe" size="490928">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Car Editor.exe" size="492976">
       <assemblyIdentity name="Car Editor" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>WxSzT4wYOT2VNubt/3H25l1gd1m2AiQfdBBYf+HQX9Y=</dsig:DigestValue>
+        <dsig:DigestValue>d81AqJ5YqgqufMuRp9I0uqkg54O1XnosPqS0u6AAxmc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

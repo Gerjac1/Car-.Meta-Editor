@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Drawing.Text;
 using System.ComponentModel.Design;
 using static System.Net.Mime.MediaTypeNames;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Car_Editor
 {
@@ -32,6 +33,7 @@ namespace Car_Editor
         private const string ConfigFilePath = "appsettings.json";
         private ConfigModel config; // Config file
         private bool isEnglishLanguage = false;
+        private Button ExcelButton;
 
         public MainForm()
         {
@@ -43,6 +45,7 @@ namespace Car_Editor
             {
                 isEnglishLanguage = false;
             }
+
             InitializeComponent();
             InitializeOpenFileDialogButton();
             InitializeSelectedFileLabel();
@@ -52,6 +55,8 @@ namespace Car_Editor
             InitializeSubmit();
             InitializeEditConfigButton();
             config = LoadConfig();
+            // InitializeLanguageButton();
+            InitializeExcelEdit();
 
             // Drag & Drop support
             openFileDialogButton.AllowDrop = true;
@@ -60,6 +65,62 @@ namespace Car_Editor
 
             this.MinimumSize = new System.Drawing.Size(400, 300);
         }
+
+        private void InitializeExcelEdit()
+        {
+            Button ExcelButton = new Button();
+            if (isEnglishLanguage)
+            {
+                ExcelButton.Text = "Open Excel";
+            }
+            else
+            {
+                ExcelButton.Text = "Otwórz Excela";
+            }
+            ExcelButton.Location = new System.Drawing.Point(280, 13);
+            ExcelButton.AutoSize = true;
+            ExcelButton.Click += ExcelButton_Click;
+            this.Controls.Add(ExcelButton);
+
+        }
+
+        private void ExcelButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo("excel.exe", "Interior_editor.xlsx"));
+            }
+            catch (Exception ex)
+            {
+                if (isEnglishLanguage)
+                {
+                    MessageBox.Show($"An error occurred while opening the file: {ex.Message}");
+                }
+                else
+                {
+                    MessageBox.Show($"Wystąpił błąd podczas otwierania pliku: {ex.Message}");
+                }
+            }
+        }
+
+
+        /* private void InitializeLanguageButton()
+         {
+             Button languageButton = new Button();
+             languageButton.Text = "English";
+             languageButton.Dock = DockStyle.Bottom;
+             languageButton.Click += LanguageButton_Click;
+             this.Controls.Add(languageButton);
+         }
+
+         private void LanguageButton_Click(object sender, EventArgs e)
+         {
+             // Toggle language
+             isEnglishLanguage = !isEnglishLanguage;
+
+             // Reload all functions
+
+         } */
 
         private ConfigModel LoadConfig()
         {
@@ -119,7 +180,7 @@ namespace Car_Editor
                     MessageBox.Show($"Wystąpił błąd podczas odczytywania pliku konfiguracyjnego: {ex.Message}");
                 }
             }
-    }
+        }
 
         private void InitializeOpenFileDialogButton()
         {
