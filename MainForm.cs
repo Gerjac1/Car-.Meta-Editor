@@ -14,6 +14,7 @@ using System.Drawing.Text;
 using System.ComponentModel.Design;
 using static System.Net.Mime.MediaTypeNames;
 using System.Diagnostics.Eventing.Reader;
+using System.Threading;
 
 namespace Car_Editor
 {
@@ -153,7 +154,14 @@ namespace Car_Editor
         {
             try
             {
-                Process.Start("notepad.exe", "appsettings.json");
+                Process NotepadProcess = Process.Start("notepad.exe", "appsettings.json");
+                Thread monitoringThread = new Thread(() =>
+                {
+                    NotepadProcess.WaitForExit();
+                    // Po zamknięciu Notepad, wywołaj funkcję LoadConfig()
+                    config = LoadConfig();
+                });
+                monitoringThread.Start();
             }
             catch (Exception ex)
             {
