@@ -81,28 +81,38 @@ namespace Car_Editor
             ExcelButton.AutoSize = true;
             ExcelButton.Click += ExcelButton_Click;
             this.Controls.Add(ExcelButton);
-
         }
 
         private void ExcelButton_Click(object sender, EventArgs e)
         {
+            bool excelOpened = false;
+            bool calcOpened = false;
             try
             {
-                Process.Start(new ProcessStartInfo("excel.exe", "Interior_editor.xlsx"));
+                Process.Start("excel.exe", "Interior_editor.xlsx");
+                excelOpened = true;
             }
-            catch (Exception ex)
+            catch { excelOpened = false;}
+
+            try
+            {
+                Process.Start("scalc.exe", "Interior_editor.xlsx");
+                calcOpened = true;
+            }
+            catch { calcOpened = false;}
+
+            if(!excelOpened && !calcOpened)
             {
                 if (isEnglishLanguage)
                 {
-                    MessageBox.Show($"An error occurred while opening the file: {ex.Message}");
+                    MessageBox.Show($"An error occurred while opening the file!");
                 }
                 else
                 {
-                    MessageBox.Show($"Wystąpił błąd podczas otwierania pliku: {ex.Message}");
+                    MessageBox.Show($"Wystąpił błąd podczas otwierania pliku!");
                 }
             }
         }
-
 
         /* private void InitializeLanguageButton()
          {
@@ -121,30 +131,6 @@ namespace Car_Editor
              // Reload all functions
 
          } */
-
-        private ConfigModel LoadConfig()
-        {
-            try
-            {
-                // Read json file
-                string jsonString = File.ReadAllText(ConfigFilePath);
-
-                // Deserialize json file
-                return JsonSerializer.Deserialize<ConfigModel>(jsonString);
-            }
-            catch (Exception ex)
-            {
-                if (isEnglishLanguage)
-                {
-                    MessageBox.Show($"An error occurred while reading the configuration file: {ex.Message}");
-                }
-                else
-                {
-                    MessageBox.Show($"Wystąpił błąd podczas odczytywania pliku konfiguracyjnego: {ex.Message}");
-                }
-                return null;
-            }
-        }
 
         private void InitializeEditConfigButton()
         {
@@ -167,7 +153,7 @@ namespace Car_Editor
         {
             try
             {
-                Process.Start(new ProcessStartInfo("notepad.exe", "appsettings.json") { Verb = "runas"});
+                Process.Start("notepad.exe", "appsettings.json");
             }
             catch (Exception ex)
             {
@@ -802,6 +788,29 @@ namespace Car_Editor
             customMessageBox.Controls.Add(okButton);
 
             customMessageBox.ShowDialog();
+        }
+        private ConfigModel LoadConfig()
+        {
+            try
+            {
+                // Read json file
+                string jsonString = File.ReadAllText(ConfigFilePath);
+
+                // Deserialize json file
+                return JsonSerializer.Deserialize<ConfigModel>(jsonString);
+            }
+            catch (Exception ex)
+            {
+                if (isEnglishLanguage)
+                {
+                    MessageBox.Show($"An error occurred while reading the configuration file: {ex.Message}");
+                }
+                else
+                {
+                    MessageBox.Show($"Wystąpił błąd podczas odczytywania pliku konfiguracyjnego: {ex.Message}");
+                }
+                return null;
+            }
         }
     }
 }
