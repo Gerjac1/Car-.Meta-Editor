@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Globalization;
 using System.Drawing.Text;
 using System.ComponentModel.Design;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Car_Editor
 {
@@ -30,14 +31,23 @@ namespace Car_Editor
         private bool selectedcheckbox2;
         private const string ConfigFilePath = "appsettings.json";
         private ConfigModel config; // Config file
+        private bool isEnglishLanguage = false;
 
         public MainForm()
         {
+            if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "en")
+            {
+                isEnglishLanguage = true;
+            }
+            else
+            {
+                isEnglishLanguage = false;
+            }
             InitializeComponent();
-            InitializeOpenFileDialogButton(); 
-            InitializeSelectedFileLabel(); 
-            InitializeOptions(); 
-            InitializeOptionsLabel(); 
+            InitializeOpenFileDialogButton();
+            InitializeSelectedFileLabel();
+            InitializeOptions();
+            InitializeOptionsLabel();
             InitializeCheckbox();
             InitializeSubmit();
             InitializeEditConfigButton();
@@ -63,7 +73,14 @@ namespace Car_Editor
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Wystąpił błąd podczas odczytywania pliku konfiguracyjnego: {ex.Message}");
+                if (isEnglishLanguage)
+                {
+                    MessageBox.Show($"An error occurred while reading the configuration file: {ex.Message}");
+                }
+                else
+                {
+                    MessageBox.Show($"Wystąpił błąd podczas odczytywania pliku konfiguracyjnego: {ex.Message}");
+                }
                 return null;
             }
         }
@@ -71,7 +88,14 @@ namespace Car_Editor
         private void InitializeEditConfigButton()
         {
             Button editConfigButton = new Button();
-            editConfigButton.Text = "Edytuj Config";
+            if (isEnglishLanguage)
+            {
+                editConfigButton.Text = "Edit Config";
+            }
+            else
+            {
+                editConfigButton.Text = "Edytuj Config";
+            }
             editConfigButton.Dock = DockStyle.Bottom; // Assign button to bottom dock
             editConfigButton.Click += editConfigButton_Click; 
 
@@ -86,14 +110,28 @@ namespace Car_Editor
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Wystąpił błąd podczas otwierania pliku konfiguracyjnego: {ex.Message}");
+                if (isEnglishLanguage)
+                {
+                    MessageBox.Show($"An error occurred while reading the configuration file: {ex.Message}");
+                }
+                else
+                {
+                    MessageBox.Show($"Wystąpił błąd podczas odczytywania pliku konfiguracyjnego: {ex.Message}");
+                }
             }
     }
 
-        private void InitializeOpenFileDialogButton() 
+        private void InitializeOpenFileDialogButton()
         {
             openFileDialogButton = new Button();
-            openFileDialogButton.Text = "Wybierz plik";
+            if (isEnglishLanguage)
+            {
+                openFileDialogButton.Text = "Choose file";
+            }
+            else
+            {
+                openFileDialogButton.Text = "Wybierz plik";
+            }
             openFileDialogButton.Location = new System.Drawing.Point(10, 10);
             openFileDialogButton.Size = new System.Drawing.Size(100, 30);
             openFileDialogButton.Click += openFileDialogButton_Click; 
@@ -128,14 +166,28 @@ namespace Car_Editor
                 string filePath = files[0];
 
                 // Show name
-                selectedFileLabel.Text = "Wybrany plik: " + Path.GetFileName(filePath);
+                if (isEnglishLanguage)
+                {
+                    selectedFileLabel.Text = "Choosed file: " + Path.GetFileName(filePath);
+                }
+                else
+                {
+                    selectedFileLabel.Text = "Wybrany plik: " + Path.GetFileName(filePath);
+                }
                 selectedFilePath = files[0];
             }
         }
-        private void InitializeOptions() 
+        private void InitializeOptions()
         {
             options = new ComboBox();
-            options.Items.AddRange(new object[] { "2-osobowe", "4-osobowe", "Bomba" });
+            if (isEnglishLanguage)
+            {
+                options.Items.AddRange(new object[] { "2-person", "4-person", "Very Strong" });
+            }
+            else
+            {
+                options.Items.AddRange(new object[] { "2-osobowe", "4-osobowe", "Bomba" });
+            }
             options.SelectedIndex = 0;
             options.Location = new System.Drawing.Point(10, 65);
             options.Size = new System.Drawing.Size(150, 30);
@@ -153,17 +205,31 @@ namespace Car_Editor
         private void InitializeOptionsLabel()
         {
             LabelOptions = new Label();
-            LabelOptions.Text = "Wybierz typ handlingu:";
+            if (isEnglishLanguage)
+            {
+                LabelOptions.Text = "Choose Handling type:";
+            }
+            else
+            {
+                LabelOptions.Text = "Wybierz typ handlingu:";
+            }
             LabelOptions.Location = new System.Drawing.Point(10, 50);
             LabelOptions.AutoSize = true;
 
             this.Controls.Add(LabelOptions);
         }
 
-        private void InitializeSelectedFileLabel() 
+        private void InitializeSelectedFileLabel()
         {
             selectedFileLabel = new Label();
-            selectedFileLabel.Text = "Wybrany plik: ";
+            if (isEnglishLanguage)
+            {
+                selectedFileLabel.Text = "Choosed file: ";
+            }
+            else
+            {
+                selectedFileLabel.Text = "Wybrany plik: ";
+            }
             selectedFileLabel.Location = new System.Drawing.Point(120, 18);
             selectedFileLabel.AutoSize = true;
 
@@ -173,14 +239,28 @@ namespace Car_Editor
         private void InitializeCheckbox()
         {
             checkbox = new CheckBox();
-            checkbox.Text = "Boost Masy";
+            if (isEnglishLanguage)
+            {
+                checkbox.Text = "Mass Boost";
+            }
+            else
+            {
+                checkbox.Text = "Boost Masy";
+            }
             checkbox.Location = new System.Drawing.Point(180, 60);
             checkbox.Size = new System.Drawing.Size(85, 30);
             checkbox.CheckedChanged += (sender, e) => selectedcheckbox1 = checkbox.Checked; // Getting checkbox value
 
 
             checkbox2 = new CheckBox();
-            checkbox2.Text = "Boost Silnika";
+            if (isEnglishLanguage)
+            {
+                checkbox2.Text = "Engine Boost";
+            }
+            else
+            {
+                checkbox2.Text = "Boost Silnika";
+            }
             checkbox2.Location = new System.Drawing.Point(270, 60);
             checkbox2.Size = new System.Drawing.Size(90, 30);
             checkbox2.CheckedChanged += (sender, e) => selectedcheckbox2 = checkbox2.Checked; // Getting checkbox value
@@ -192,7 +272,14 @@ namespace Car_Editor
         private void InitializeSubmit()
         {
             Submit = new Button();
-            Submit.Text = "Zmień Handling";
+            if (isEnglishLanguage)
+            {
+                Submit.Text = "Change Handling";
+            }
+            else
+            {
+                Submit.Text = "Zmień Handling";
+            }
             Submit.Location = new System.Drawing.Point(10, 100);
             Submit.Size = new System.Drawing.Size(100, 30);
             Submit.Click += Submit_Click; 
@@ -218,16 +305,30 @@ namespace Car_Editor
                     filePath = openFileDialog.FileName;
 
                     // Show file path 
-                    selectedFileLabel.Text = "Wybrany plik: " + Path.GetFileName(filePath);
+                    if (isEnglishLanguage)
+                    {
+                        selectedFileLabel.Text = "Selected file: " + Path.GetFileName(filePath);
+                    }
+                    else
+                    {
+                        selectedFileLabel.Text = "Wybrany plik: " + Path.GetFileName(filePath);
+                    }
                     selectedFilePath = openFileDialog.FileName;
                 }
             }
         }
         private void Submit_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(selectedFileLabel.Text) || selectedFileLabel.Text == "Wybrany plik: ")
+            if (string.IsNullOrEmpty(selectedFileLabel.Text) || selectedFileLabel.Text == "Wybrany plik: " || selectedFileLabel.Text == "Selected file: ")
             {
-                ShowCustomMessageBox("Nie wybrano pliku!");
+                if (isEnglishLanguage)
+                {
+                    ShowCustomMessageBox("No file selected!");
+                }
+                else
+                {
+                    ShowCustomMessageBox("Nie wybrano pliku!");
+                }
                 return;
             }
             else
@@ -242,7 +343,14 @@ namespace Car_Editor
             customMessageBox.Size = new Size(180, 150);
             customMessageBox.StartPosition = FormStartPosition.CenterParent;
             customMessageBox.FormBorderStyle = FormBorderStyle.FixedDialog;
-            customMessageBox.Text = "Wybierz plik";
+            if (isEnglishLanguage)
+            {
+                customMessageBox.Text = "Select file";
+            }
+            else
+            {
+                customMessageBox.Text = "Wybierz plik";
+            }
 
             // Message content
             Label label = new Label();
@@ -545,18 +653,39 @@ namespace Car_Editor
                         ModifyXMLValues(doc, "fEngineDamageMult", _BombafEngineDamageMult);
                         break;
                     default:
-                        MessageBox.Show("Błąd, nie wybrano poprawnej opcji");
+                        if (isEnglishLanguage)
+                        {
+                            MessageBox.Show("Error, no valid option selected!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Błąd, nie wybrano poprawnej opcji!");
+                        }
                         break;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Błąd podczas wczytywania lub modyfikowania pliku XML: {ex.Message}");
+                if (isEnglishLanguage)
+                {
+                    MessageBox.Show($"Error loading or modifying the XML file: {ex.Message}");
+                }
+                else
+                {
+                    MessageBox.Show($"Błąd podczas wczytywania lub modyfikowania pliku XML: {ex.Message}");
+                }
             }
 
             string newFilePath = Path.ChangeExtension(filePath, ".meta");
             doc.Save(newFilePath);
-            ShowCustomMessageBox2($"Zmodyfikowano plik: {Path.GetFileName(filePath)}");
+            if (isEnglishLanguage)
+            {
+                ShowCustomMessageBox2($"File modified: {Path.GetFileName(filePath)}");
+            }
+            else
+            {
+                ShowCustomMessageBox2($"Zmodyfikowano plik: {Path.GetFileName(filePath)}");
+            }
         }
         private void ModifyXMLValues(XmlDocument doc, string nodeName, string newValue)
         {
@@ -589,7 +718,14 @@ namespace Car_Editor
             customMessageBox.Size = new Size(180, 150);
             customMessageBox.StartPosition = FormStartPosition.CenterParent;
             customMessageBox.FormBorderStyle = FormBorderStyle.FixedDialog;
-            customMessageBox.Text = "Modyfikacja pliku";
+            if (isEnglishLanguage)
+            {
+                customMessageBox.Text = "File modification";
+            }
+            else
+            {
+                customMessageBox.Text = "Modyfikacja pliku";
+            }
 
             Label label = new Label();
             label.Text = message;
@@ -605,10 +741,6 @@ namespace Car_Editor
             customMessageBox.Controls.Add(okButton);
 
             customMessageBox.ShowDialog();
-        }
-        private void MainForm_Load(object sender, EventArgs e) // To Delete in future
-        { 
-
         }
     }
 }
