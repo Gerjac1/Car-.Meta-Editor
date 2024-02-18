@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.IO.Pipes;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
@@ -15,6 +16,8 @@ using System.ComponentModel.Design;
 using static System.Net.Mime.MediaTypeNames;
 using System.Diagnostics.Eventing.Reader;
 using System.Threading;
+using System.Net;
+using System.Configuration.Install;
 
 namespace Car_Editor
 {
@@ -34,7 +37,6 @@ namespace Car_Editor
         private const string ConfigFilePath = "appsettings.json";
         private ConfigModel config; // Config file
         private bool isEnglishLanguage = false;
-        private Button ExcelButton;
 
         public MainForm()
         {
@@ -47,6 +49,7 @@ namespace Car_Editor
                 isEnglishLanguage = false;
             }
 
+            InitializeWebUpdate();
             InitializeComponent();
             InitializeOpenFileDialogButton();
             InitializeSelectedFileLabel();
@@ -67,6 +70,69 @@ namespace Car_Editor
             this.MinimumSize = new System.Drawing.Size(400, 300);
         }
 
+        private void InitializeWebUpdate()
+        {
+            WebClient webClient = new WebClient();
+            var client = new WebClient();
+            if (!webClient.DownloadString("https://github.com/Gerjac1/Car-.Meta-Editor/releases/download/Update/Version.txt").Contains(GetType().Assembly.GetName().Version.ToString()))
+            {
+                if (isEnglishLanguage)
+                {
+                    if (MessageBox.Show("A new update is available! Do you want to download it?", "Car Editor", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            if (File.Exists(@"CarEditorInstaller\Installer.msi")) { File.Delete(@"CarEditorInstaller\Installer.msi"); }
+                            if (File.Exists(@"CarEditorInstaller\setup.exe")) { File.Delete(@"CarEditorInstaller\setup.exe"); }
+                            client.DownloadFile("https://github.com/Gerjac1/Car-.Meta-Editor/releases/download/Update/CarEditorInstaller.zip", @"CarEditorInstaller.zip");
+                            string zipPath = @".\CarEditorInstaller.zip";
+                            string extractPath = @".\";
+                            ZipFile.ExtractToDirectory(zipPath, extractPath);
+
+                            if (File.Exists(@"CarEditorInstaller\Installer.msi"))
+                            {
+                                Process process = new Process();
+                                process.StartInfo.FileName = "msiexec.exe";
+                                process.StartInfo.Arguments = string.Format(@"/i CarEditorInstaller\Installer.msi");
+                                this.Close();
+                                process.Start();
+                            }
+                        }
+                        catch (Exception ex) 
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                    }
+                }
+                else
+                {
+                    if (MessageBox.Show("Nowa aktualizacja jest dostępna! Czy chcesz ją pobrać?", "Car Editor", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) 
+                    {
+                        try
+                        {
+                            if (File.Exists(@"CarEditorInstaller\Installer.msi")) { File.Delete(@"CarEditorInstaller\Installer.msi"); }
+                            if (File.Exists(@"CarEditorInstaller\setup.exe")) { File.Delete(@"CarEditorInstaller\setup.exe"); }
+                            client.DownloadFile("https://github.com/Gerjac1/Car-.Meta-Editor/releases/download/Update/CarEditorInstaller.zip", @"CarEditorInstaller.zip");
+                            string zipPath = @".\CarEditorInstaller.zip";
+                            string extractPath = @".\";
+                            ZipFile.ExtractToDirectory(zipPath, extractPath);
+                            if (File.Exists(@"CarEditorInstaller\Installer.msi"))
+                            {
+                                Process process = new Process();
+                                process.StartInfo.FileName = "msiexec.exe";
+                                process.StartInfo.Arguments = string.Format(@"/i CarEditorInstaller\Installer.msi"); 
+                                this.Close();
+                                process.Start();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                    }
+                 }
+            }
+        }
         private void InitializeExcelEdit()
         {
             Button ExcelButton = new Button();
@@ -82,7 +148,7 @@ namespace Car_Editor
             ExcelButton.AutoSize = true;
             ExcelButton.Click += ExcelButton_Click;
             this.Controls.Add(ExcelButton);
-        }
+        } 
 
         private void ExcelButton_Click(object sender, EventArgs e)
         {
