@@ -37,6 +37,9 @@ namespace Car_Editor
         private const string ConfigFilePath = "appsettings.json";
         private ConfigModel config; // Config file
         private bool isEnglishLanguage = false;
+        private Button ExcelButton;
+        private Button languageButton;
+        private Button editConfigButton;
 
         public MainForm()
         {
@@ -49,7 +52,6 @@ namespace Car_Editor
                 isEnglishLanguage = false;
             }
 
-            InitializeWebUpdate();
             InitializeComponent();
             InitializeOpenFileDialogButton();
             InitializeSelectedFileLabel();
@@ -59,7 +61,7 @@ namespace Car_Editor
             InitializeSubmit();
             InitializeEditConfigButton();
             config = LoadConfig();
-            // InitializeLanguageButton();
+            InitializeLanguageButton();
             InitializeExcelEdit();
 
             // Drag & Drop support
@@ -68,6 +70,7 @@ namespace Car_Editor
             openFileDialogButton.DragDrop += openFileDialogButton_DragDrop;
 
             this.MinimumSize = new System.Drawing.Size(400, 300);
+            InitializeWebUpdate();
         }
 
         private void InitializeWebUpdate()
@@ -135,7 +138,7 @@ namespace Car_Editor
         }
         private void InitializeExcelEdit()
         {
-            Button ExcelButton = new Button();
+            ExcelButton = new Button();
             if (isEnglishLanguage)
             {
                 ExcelButton.Text = "Open Excel";
@@ -181,27 +184,25 @@ namespace Car_Editor
             }
         }
 
-        /* private void InitializeLanguageButton()
-         {
-             Button languageButton = new Button();
-             languageButton.Text = "English";
-             languageButton.Dock = DockStyle.Bottom;
-             languageButton.Click += LanguageButton_Click;
-             this.Controls.Add(languageButton);
+         private void InitializeLanguageButton()
+        {
+            languageButton = new Button();
+            if (isEnglishLanguage)
+            {
+                languageButton.Text = "Polish";
+            }
+            else
+            {
+                languageButton.Text = "English";
+            }
+            languageButton.Dock = DockStyle.Bottom;
+            languageButton.Click += LanguageButton_Click;
+            this.Controls.Add(languageButton);
          }
-
-         private void LanguageButton_Click(object sender, EventArgs e)
-         {
-             // Toggle language
-             isEnglishLanguage = !isEnglishLanguage;
-
-             // Reload all functions
-
-         } */
 
         private void InitializeEditConfigButton()
         {
-            Button editConfigButton = new Button();
+            editConfigButton = new Button();
             if (isEnglishLanguage)
             {
                 editConfigButton.Text = "Edit Config";
@@ -247,7 +248,7 @@ namespace Car_Editor
             openFileDialogButton = new Button();
             if (isEnglishLanguage)
             {
-                openFileDialogButton.Text = "Choose file";
+                openFileDialogButton.Text = "Select file";
             }
             else
             {
@@ -289,7 +290,7 @@ namespace Car_Editor
                 // Show name
                 if (isEnglishLanguage)
                 {
-                    selectedFileLabel.Text = "Choosed file: " + Path.GetFileName(filePath);
+                    selectedFileLabel.Text = "Selected file: " + Path.GetFileName(filePath);
                 }
                 else
                 {
@@ -345,7 +346,7 @@ namespace Car_Editor
             selectedFileLabel = new Label();
             if (isEnglishLanguage)
             {
-                selectedFileLabel.Text = "Choosed file: ";
+                selectedFileLabel.Text = "Selected file: ";
             }
             else
             {
@@ -796,17 +797,30 @@ namespace Car_Editor
                     MessageBox.Show($"Błąd podczas wczytywania lub modyfikowania pliku XML: {ex.Message}");
                 }
             }
-
-            string newFilePath = Path.ChangeExtension(filePath, ".meta");
-            doc.Save(newFilePath);
-            if (isEnglishLanguage)
+            try
             {
-                ShowCustomMessageBox2($"File modified: {Path.GetFileName(filePath)}");
+                string newFilePath = Path.ChangeExtension(filePath, ".meta");
+                doc.Save(newFilePath);
+                if (isEnglishLanguage)
+                {
+                    ShowCustomMessageBox2($"File modified: {Path.GetFileName(filePath)}");
+                }
+                else
+                {
+                    ShowCustomMessageBox2($"Zmodyfikowano plik: {Path.GetFileName(filePath)}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ShowCustomMessageBox2($"Zmodyfikowano plik: {Path.GetFileName(filePath)}");
-            }
+                if (isEnglishLanguage)
+                {
+                    MessageBox.Show($"Error loading or modifying the XML file: {ex.Message}");
+                }
+                else
+                {
+                    MessageBox.Show($"Błąd podczas wczytywania lub modyfikowania pliku XML: {ex.Message}");
+                }
+            }   
         }
         private void ModifyXMLValues(XmlDocument doc, string nodeName, string newValue)
         {
@@ -885,6 +899,37 @@ namespace Car_Editor
                 }
                 return null;
             }
+        }
+
+        private void LanguageButton_Click(object sender, EventArgs e)
+        {
+            // Toggle language
+            isEnglishLanguage = !isEnglishLanguage;
+
+            // Reload all functions
+            options.Dispose();
+            options.Items.Clear();
+            openFileDialogButton.Dispose();
+            selectedFileLabel.Dispose();
+            LabelOptions.Dispose();
+            checkbox.Dispose();
+            checkbox2.Dispose();
+            Submit.Dispose();
+            ExcelButton.Dispose();
+            languageButton.Dispose();
+            editConfigButton.Dispose();
+
+            InitializeComponent();
+            InitializeOpenFileDialogButton();
+            InitializeSelectedFileLabel();
+            InitializeOptions();
+            InitializeOptionsLabel();
+            InitializeCheckbox();
+            InitializeSubmit();
+            InitializeEditConfigButton();
+            config = LoadConfig();
+            InitializeLanguageButton();
+            InitializeExcelEdit();
         }
     }
 }
