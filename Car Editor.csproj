@@ -144,6 +144,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Include="appsettingsPD.json" />
     <!--<EmbeddedResource Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>-->
@@ -179,7 +183,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="appsettings.json">
+    <EmbeddedResource Include="appsettingsnormal.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
     </EmbeddedResource>

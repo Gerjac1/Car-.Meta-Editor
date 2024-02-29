@@ -34,12 +34,17 @@ namespace Car_Editor
         private string selectedFilePath = "";
         private bool selectedcheckbox1;
         private bool selectedcheckbox2;
-        private const string ConfigFilePath = "appsettings.json";
+        private static readonly string userName = Environment.UserName;
+        private static readonly string ConfigFilePath = "C:\\Users\\"+userName+"\\AppData\\Roaming\\Car Editor\\appsettingsnormal.json";
+        private static readonly string ConfigFilePath2 = "C:\\Users\\" + userName + "\\AppData\\Roaming\\Car Editor\\appsettingsPD.json";
+        private string selectedFileConfig = ConfigFilePath;
         private ConfigModel config; // Config file
         private bool isEnglishLanguage = false;
         private Button ExcelButton;
         private Button languageButton;
         private Button editConfigButton;
+        private Button editConfigPdButton;
+        private bool isPD = false;
 
         public MainForm()
         {
@@ -60,7 +65,8 @@ namespace Car_Editor
             InitializeCheckbox();
             InitializeSubmit();
             InitializeEditConfigButton();
-            config = LoadConfig();
+            InitializeEditConfigPdButton();
+            config = LoadConfig(selectedFileConfig);
             InitializeLanguageButton();
             InitializeExcelEdit();
 
@@ -159,14 +165,14 @@ namespace Car_Editor
             bool calcOpened = false;
             try
             {
-                Process.Start("excel.exe", "Interior_editor.xlsx");
+                Process.Start("excel.exe", "C:\\Users\\" + userName + "\\AppData\\Roaming\\Car Editor\\Interior_editor.xlsx");
                 excelOpened = true;
             }
             catch { excelOpened = false;}
 
             try
             {
-                Process.Start("scalc.exe", "Interior_editor.xlsx");
+                Process.Start("scalc.exe", "C:\\Users\\" + userName + "\\AppData\\Roaming\\Car Editor\\Interior_editor.xlsx");
                 calcOpened = true;
             }
             catch { calcOpened = false;}
@@ -200,6 +206,75 @@ namespace Car_Editor
             this.Controls.Add(languageButton);
          }
 
+        private void InitializeEditConfigPdButton()
+        {
+            editConfigPdButton = new Button();
+            if (!isPD)
+            {
+                if (isEnglishLanguage)
+                {
+                    editConfigPdButton.Text = "Change to PD Config";
+                }
+                else
+                {
+                    editConfigPdButton.Text = "Zmień na PD Config";
+                }
+            }
+            else
+            {
+                if (isEnglishLanguage)
+                {
+                    editConfigPdButton.Text = "Change to Normal Config";
+                }
+                else
+                {
+                    editConfigPdButton.Text = "Zmień na Normalny Config";
+                }
+            }
+            editConfigPdButton.Dock = DockStyle.Bottom; // Assign button to bottom dock
+            editConfigPdButton.Click += editConfigPdButton_Click;
+
+            this.Controls.Add(editConfigPdButton);
+        }
+
+        private void editConfigPdButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!isPD)
+                {
+                    selectedFileConfig = ConfigFilePath2;
+                    config = LoadConfig(selectedFileConfig);
+                    isPD = true;
+                    editConfigPdButton.Dispose();
+                    languageButton.Dispose();
+                    InitializeEditConfigPdButton();
+                    InitializeLanguageButton();
+                }
+                else
+                {
+                    selectedFileConfig = ConfigFilePath;
+                    config = LoadConfig(selectedFileConfig);
+                    isPD = false;
+                    editConfigPdButton.Dispose();
+                    languageButton.Dispose();
+                    InitializeEditConfigPdButton();
+                    InitializeLanguageButton();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (isEnglishLanguage)
+                {
+                    MessageBox.Show($"An error occurred while reading the configuration file: {ex.Message}");
+                }
+                else
+                {
+                    MessageBox.Show($"Wystąpił błąd podczas odczytywania pliku konfiguracyjnego: {ex.Message}");
+                }
+            }
+        }
+
         private void InitializeEditConfigButton()
         {
             editConfigButton = new Button();
@@ -221,12 +296,12 @@ namespace Car_Editor
         {
             try
             {
-                Process NotepadProcess = Process.Start("notepad.exe", "appsettings.json");
+                Process NotepadProcess = Process.Start("notepad.exe", selectedFileConfig);
                 Thread monitoringThread = new Thread(() =>
                 {
                     NotepadProcess.WaitForExit();
                     // Po zamknięciu Notepad, wywołaj funkcję LoadConfig()
-                    config = LoadConfig();
+                    config = LoadConfig(selectedFileConfig);
                 });
                 monitoringThread.Start();
             }
@@ -877,12 +952,12 @@ namespace Car_Editor
 
             customMessageBox.ShowDialog();
         }
-        private ConfigModel LoadConfig()
+        private ConfigModel LoadConfig(string ConfigFilePathInitial)
         {
             try
             {
                 // Read json file
-                string jsonString = File.ReadAllText(ConfigFilePath);
+                string jsonString = File.ReadAllText(ConfigFilePathInitial);
 
                 // Deserialize json file
                 return JsonSerializer.Deserialize<ConfigModel>(jsonString);
@@ -918,6 +993,7 @@ namespace Car_Editor
             ExcelButton.Dispose();
             languageButton.Dispose();
             editConfigButton.Dispose();
+            editConfigPdButton.Dispose();
 
             InitializeComponent();
             InitializeOpenFileDialogButton();
@@ -927,7 +1003,8 @@ namespace Car_Editor
             InitializeCheckbox();
             InitializeSubmit();
             InitializeEditConfigButton();
-            config = LoadConfig();
+            InitializeEditConfigPdButton();
+            config = LoadConfig(selectedFileConfig);
             InitializeLanguageButton();
             InitializeExcelEdit();
         }
