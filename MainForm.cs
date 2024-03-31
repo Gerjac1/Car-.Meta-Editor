@@ -35,7 +35,7 @@ namespace Car_Editor
         private bool selectedcheckbox1;
         private bool selectedcheckbox2;
         private static readonly string userName = Environment.UserName;
-        private static readonly string ConfigFilePath = "C:\\Users\\"+userName+"\\AppData\\Roaming\\Car Editor\\appsettingsnormal.json";
+        private static readonly string ConfigFilePath = "C:\\Users\\" + userName + "\\AppData\\Roaming\\Car Editor\\appsettingsnormal.json";
         private static readonly string ConfigFilePath2 = "C:\\Users\\" + userName + "\\AppData\\Roaming\\Car Editor\\appsettingsPD.json";
         private string selectedFileConfig = ConfigFilePath;
         private ConfigModel config; // Config file
@@ -67,6 +67,7 @@ namespace Car_Editor
             InitializeEditConfigButton();
             InitializeEditConfigPdButton();
             config = LoadConfig(selectedFileConfig);
+            CheckConfigType();
             InitializeLanguageButton();
             InitializeExcelEdit();
 
@@ -302,6 +303,7 @@ namespace Car_Editor
                     NotepadProcess.WaitForExit();
                     // Po zamknięciu Notepad, wywołaj funkcję LoadConfig()
                     config = LoadConfig(selectedFileConfig);
+                    CheckConfigType();
                 });
                 monitoringThread.Start();
             }
@@ -976,6 +978,15 @@ namespace Car_Editor
             }
         }
 
+        private void CheckConfigType()
+        {
+            if (config.PDConfig)
+            {
+                isPD = true;
+            }
+            else isPD = false;
+        }
+
         private void LanguageButton_Click(object sender, EventArgs e)
         {
             // Toggle language
@@ -1005,6 +1016,7 @@ namespace Car_Editor
             InitializeEditConfigButton();
             InitializeEditConfigPdButton();
             config = LoadConfig(selectedFileConfig);
+            CheckConfigType();
             InitializeLanguageButton();
             InitializeExcelEdit();
         }

@@ -33,6 +33,5 @@ F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Text.Encodings.Web.xml
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Text.Json.xml
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Threading.Tasks.Extensions.xml
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.ValueTuple.xml
-F:\Car Editor\Car Editor\Car Editor\bin\Debug\appsettings.json
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\Interior_editor.xlsx
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\appsettingsnormal.json
