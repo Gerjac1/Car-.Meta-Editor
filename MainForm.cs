@@ -25,8 +25,10 @@ namespace Car_Editor
     {
         private Button openFileDialogButton; 
         private Label selectedFileLabel; 
-        private ComboBox options; 
+        private ComboBox options;
+        private ComboBox configOptions;
         private int selectedComboBox;
+        private int selectedConfigComboBox;
         private Label LabelOptions; 
         private CheckBox checkbox;
         private CheckBox checkbox2;
@@ -36,15 +38,14 @@ namespace Car_Editor
         private bool selectedcheckbox2;
         private static readonly string userName = Environment.UserName;
         private static readonly string ConfigFilePath = "C:\\Users\\" + userName + "\\AppData\\Roaming\\Car Editor\\appsettingsnormal.json";
-        private static readonly string ConfigFilePath2 = "C:\\Users\\" + userName + "\\AppData\\Roaming\\Car Editor\\appsettingsPD.json";
+        private static readonly string ConfigFilePath2 = "C:\\Users\\" + userName + "\\AppData\\Roaming\\Car Editor\\appsettingssuv.json";
+        private static readonly string ConfigFilePath3 = "C:\\Users\\" + userName + "\\AppData\\Roaming\\Car Editor\\appsettingsPD.json";
         private string selectedFileConfig = ConfigFilePath;
         private ConfigModel config; // Config file
         private bool isEnglishLanguage = false;
         private Button ExcelButton;
         private Button languageButton;
         private Button editConfigButton;
-        private Button editConfigPdButton;
-        private bool isPD = false;
 
         public MainForm()
         {
@@ -65,11 +66,11 @@ namespace Car_Editor
             InitializeCheckbox();
             InitializeSubmit();
             InitializeEditConfigButton();
-            InitializeEditConfigPdButton();
             config = LoadConfig(selectedFileConfig);
-            CheckConfigType();
             InitializeLanguageButton();
             InitializeExcelEdit();
+            InitializeConfigSelect();
+            InitializeConfigOptions();
 
             // Drag & Drop support
             openFileDialogButton.AllowDrop = true;
@@ -207,75 +208,6 @@ namespace Car_Editor
             this.Controls.Add(languageButton);
          }
 
-        private void InitializeEditConfigPdButton()
-        {
-            editConfigPdButton = new Button();
-            if (!isPD)
-            {
-                if (isEnglishLanguage)
-                {
-                    editConfigPdButton.Text = "Change to PD Config";
-                }
-                else
-                {
-                    editConfigPdButton.Text = "Zmień na PD Config";
-                }
-            }
-            else
-            {
-                if (isEnglishLanguage)
-                {
-                    editConfigPdButton.Text = "Change to Normal Config";
-                }
-                else
-                {
-                    editConfigPdButton.Text = "Zmień na Normalny Config";
-                }
-            }
-            editConfigPdButton.Dock = DockStyle.Bottom; // Assign button to bottom dock
-            editConfigPdButton.Click += editConfigPdButton_Click;
-
-            this.Controls.Add(editConfigPdButton);
-        }
-
-        private void editConfigPdButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!isPD)
-                {
-                    selectedFileConfig = ConfigFilePath2;
-                    config = LoadConfig(selectedFileConfig);
-                    isPD = true;
-                    editConfigPdButton.Dispose();
-                    languageButton.Dispose();
-                    InitializeEditConfigPdButton();
-                    InitializeLanguageButton();
-                }
-                else
-                {
-                    selectedFileConfig = ConfigFilePath;
-                    config = LoadConfig(selectedFileConfig);
-                    isPD = false;
-                    editConfigPdButton.Dispose();
-                    languageButton.Dispose();
-                    InitializeEditConfigPdButton();
-                    InitializeLanguageButton();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (isEnglishLanguage)
-                {
-                    MessageBox.Show($"An error occurred while reading the configuration file: {ex.Message}");
-                }
-                else
-                {
-                    MessageBox.Show($"Wystąpił błąd podczas odczytywania pliku konfiguracyjnego: {ex.Message}");
-                }
-            }
-        }
-
         private void InitializeEditConfigButton()
         {
             editConfigButton = new Button();
@@ -303,7 +235,6 @@ namespace Car_Editor
                     NotepadProcess.WaitForExit();
                     // Po zamknięciu Notepad, wywołaj funkcję LoadConfig()
                     config = LoadConfig(selectedFileConfig);
-                    CheckConfigType();
                 });
                 monitoringThread.Start();
             }
@@ -479,11 +410,84 @@ namespace Car_Editor
             {
                 Submit.Text = "Zmień Handling";
             }
-            Submit.Location = new System.Drawing.Point(10, 100);
+            Submit.Location = new System.Drawing.Point(10, 150);
             Submit.Size = new System.Drawing.Size(100, 30);
             Submit.Click += Submit_Click; 
 
             this.Controls.Add(Submit);
+        }
+
+        private void InitializeConfigSelect()
+        {
+            LabelOptions = new Label();
+            if (isEnglishLanguage)
+            {
+                LabelOptions.Text = "Choose config type:";
+            }
+            else
+            {
+                LabelOptions.Text = "Wybierz typ configu:";
+            }
+            LabelOptions.Location = new System.Drawing.Point(10, 100);
+            LabelOptions.AutoSize = true;
+
+            this.Controls.Add(LabelOptions);
+        }
+
+        private void InitializeConfigOptions()
+        {
+            configOptions = new ComboBox();
+            if (isEnglishLanguage)
+            {
+                configOptions.Items.AddRange(new object[] { "Normal Config", "SUV Config", "PD Config" });
+            }
+            else
+            {
+                configOptions.Items.AddRange(new object[] { "Normal Config", "SUV Config", "PD Config" });
+            }
+            configOptions.SelectedIndex = 0;
+            configOptions.Location = new System.Drawing.Point(10, 115);
+            configOptions.Size = new System.Drawing.Size(150, 30);
+            configOptions.DropDownStyle = ComboBoxStyle.DropDownList; // No manual input here
+
+            this.Controls.Add(configOptions);
+            configOptions.SelectedIndexChanged += ConfigOptions_SelectedIndexChanged;
+        }
+
+        private void ConfigOptions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectedConfigComboBox = configOptions.SelectedIndex;
+            try
+            {
+                if (selectedConfigComboBox == 0)
+                {
+                    selectedFileConfig = ConfigFilePath;
+                    config = LoadConfig(selectedFileConfig);
+                }
+
+                if (selectedConfigComboBox == 1)
+                {
+                    selectedFileConfig = ConfigFilePath2;
+                    config = LoadConfig(selectedFileConfig);
+                }
+
+                if (selectedConfigComboBox == 2)
+                {
+                    selectedFileConfig = ConfigFilePath3;
+                    config = LoadConfig(selectedFileConfig);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (isEnglishLanguage)
+                {
+                    MessageBox.Show($"An error occurred while reading the configuration file: {ex.Message}");
+                }
+                else
+                {
+                    MessageBox.Show($"Wystąpił błąd podczas odczytywania pliku konfiguracyjnego: {ex.Message}");
+                }
+            }
         }
 
         private void openFileDialogButton_Click(object sender, EventArgs e)
@@ -978,15 +982,6 @@ namespace Car_Editor
             }
         }
 
-        private void CheckConfigType()
-        {
-            if (config.PDConfig)
-            {
-                isPD = true;
-            }
-            else isPD = false;
-        }
-
         private void LanguageButton_Click(object sender, EventArgs e)
         {
             // Toggle language
@@ -1004,7 +999,6 @@ namespace Car_Editor
             ExcelButton.Dispose();
             languageButton.Dispose();
             editConfigButton.Dispose();
-            editConfigPdButton.Dispose();
 
             InitializeComponent();
             InitializeOpenFileDialogButton();
@@ -1014,11 +1008,11 @@ namespace Car_Editor
             InitializeCheckbox();
             InitializeSubmit();
             InitializeEditConfigButton();
-            InitializeEditConfigPdButton();
             config = LoadConfig(selectedFileConfig);
-            CheckConfigType();
             InitializeLanguageButton();
             InitializeExcelEdit();
+            InitializeConfigSelect();
+            InitializeConfigOptions();
         }
     }
 }

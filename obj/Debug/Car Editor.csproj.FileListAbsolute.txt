@@ -9,7 +9,6 @@ F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car Editor.pdb
 F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car_Editor.MainForm.resources
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Configuration.ConfigurationManager.dll
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Configuration.ConfigurationManager.xml
-F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car Editor.csproj.CopyComplete
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\Car Editor.exe.config
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\Car Editor.exe.manifest
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\Car Editor.application
@@ -35,3 +34,5 @@ F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.Threading.Tasks.Extensions.
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\System.ValueTuple.xml
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\Interior_editor.xlsx
 F:\Car Editor\Car Editor\Car Editor\bin\Debug\appsettingsnormal.json
+F:\Car Editor\Car Editor\Car Editor\obj\Debug\Car Editor.csproj.Up2Date
+F:\Car Editor\Car Editor\Car Editor\bin\Debug\appsettingssuv.json

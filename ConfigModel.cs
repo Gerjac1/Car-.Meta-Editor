@@ -11,7 +11,7 @@ namespace Car_Editor
 {
     public class ConfigModel
     {
-        public bool PDConfig {  get; set; }
+        public int ConfigType { get; set; }
         public double TwoOsfMass { get; set; }
         public double TwoOsfInitialDragCoeff { get; set; }
         public double TwoOsfDownforceModifier { get; set; }
